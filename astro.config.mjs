@@ -17,13 +17,14 @@ export default defineConfig({
   ],
   vite: {
     ssr: {
-      // Bundle all dependencies for standalone deployment
+      // Bundle all dependencies for standalone deployment except native modules
       noExternal: true,
+      external: ['@sentry/profiling-node', '@sentry-internal/node-cpu-profiler'],
     },
     build: {
-      // Ensure all dependencies are bundled
+      // Ensure all dependencies are bundled except native modules
       rollupOptions: {
-        external: [],
+        external: ['@sentry/profiling-node', '@sentry-internal/node-cpu-profiler'],
       },
     },
   },
