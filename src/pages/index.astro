@@ -1,0 +1,16 @@
+---
+import Layout from '../layouts/Layout.astro';
+export const prerender = true;
+---
+
+<Layout title="Home">
+  <h1>Welcome to Astro (Prerendered)</h1>
+  <p>This page is prerendered at build time.</p>
+  <p>Current time when page was built: {new Date().toISOString()}</p>
+
+  <nav>
+    <a href="/about">About (Prerendered)</a> | 
+    <a href="/dynamic">Dynamic Page</a> |
+    <a href="/sentry-test">Sentry Test</a>
+  </nav>
+</Layout>

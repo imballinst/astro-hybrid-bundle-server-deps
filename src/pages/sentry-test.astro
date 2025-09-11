@@ -1,0 +1,59 @@
+---
+import Layout from '../layouts/Layout.astro';
+// Server-rendered page to test Sentry integration
+---
+
+<Layout title="Sentry Test">
+  <h1>Sentry Integration Test</h1>
+  <p>This page tests Sentry integration with bundled dependencies.</p>
+  <p>Current time: {new Date().toISOString()}</p>
+
+  <button id="test-error">Test Sentry Error Capture</button>
+  <button id="test-transaction">Test Sentry Transaction</button>
+
+  <div id="result"></div>
+
+  <nav>
+    <a href="/">Home</a> | 
+    <a href="/about">About</a> | 
+    <a href="/dynamic">Dynamic</a>
+  </nav>
+</Layout>
+
+<script>
+import * as Sentry from '@sentry/astro';
+
+document.getElementById('test-error')?.addEventListener('click', () => {
+  try {
+    throw new Error('Test error from client-side');
+  } catch (error) {
+    Sentry.captureException(error);
+    document.getElementById('result')!.innerHTML = '<p style="color: green;">Error sent to Sentry!</p>';
+  }
+});
+
+document.getElementById('test-transaction')?.addEventListener('click', () => {
+  Sentry.startSpan({ name: 'test-transaction' }, () => {
+    document.getElementById('result')!.innerHTML = '<p style="color: blue;">Transaction sent to Sentry!</p>';
+  });
+});
+</script>
+
+<style>
+button {
+  background: #0066cc;
+  color: white;
+  border: none;
+  padding: 0.5rem 1rem;
+  margin: 0.5rem;
+  border-radius: 4px;
+  cursor: pointer;
+}
+button:hover {
+  background: #0052a3;
+}
+#result {
+  margin-top: 1rem;
+  min-height: 2rem;
+}
+</style>

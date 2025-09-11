@@ -1,0 +1,17 @@
+---
+import Layout from '../layouts/Layout.astro';
+// Note: No prerender export means this will be server-rendered
+---
+
+<Layout title="Dynamic">
+  <h1>Dynamic Page (Server-Rendered)</h1>
+  <p>This page is rendered on each request.</p>
+  <p>Current server time: {new Date().toISOString()}</p>
+  <p>Request URL: {Astro.url.href}</p>
+
+  <nav>
+    <a href="/">Home (Prerendered)</a> | 
+    <a href="/about">About (Prerendered)</a> |
+    <a href="/sentry-test">Sentry Test</a>
+  </nav>
+</Layout>
