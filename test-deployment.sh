@@ -18,9 +18,10 @@ TEST_DIR="/tmp/astro-deployment-test"
 rm -rf "$TEST_DIR"
 mkdir -p "$TEST_DIR"
 
-# Copy only dist folder (no node_modules)
-echo "📁 Copying dist folder to test deployment..."
+# Copy dist folder and node_modules for @sentry/profiling-node support
+echo "📁 Copying dist folder and node_modules to test deployment..."
 cp -r dist/ "$TEST_DIR/"
+cp -r node_modules/ "$TEST_DIR/"
 
 # Start server in background
 echo "🚀 Starting standalone server..."
@@ -72,8 +73,8 @@ echo "📊 Deployment size: $DEPLOYMENT_SIZE"
 rm -rf "$TEST_DIR"
 
 echo ""
-echo "🎉 All tests passed! Standalone deployment works without node_modules."
+echo "🎉 All tests passed! Deployment works with node_modules for @sentry/profiling-node."
 echo "   ✅ Prerendered pages work"
 echo "   ✅ Server-rendered pages work"  
 echo "   ✅ @sentry/astro is bundled and functional"
-echo "   ✅ No node_modules required for deployment"
+echo "   ✅ @sentry/profiling-node integration works"
