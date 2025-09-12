@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# Test script to validate standalone deployment without node_modules
+# Test script to validate optimized deployment with minimal node_modules containing only @sentry/profiling-node
 
 echo "🧪 Testing Astro Hybrid Bundle Server Dependencies"
 echo "=================================================="
@@ -18,10 +18,27 @@ TEST_DIR="/tmp/astro-deployment-test"
 rm -rf "$TEST_DIR"
 mkdir -p "$TEST_DIR"
 
-# Copy dist folder and node_modules for @sentry/profiling-node support
-echo "📁 Copying dist folder and node_modules to test deployment..."
+# Copy dist folder
+echo "📁 Copying dist folder to test deployment..."
 cp -r dist/ "$TEST_DIR/"
-cp -r node_modules/ "$TEST_DIR/"
+
+# Create minimal node_modules with only @sentry/profiling-node dependencies
+echo "📦 Creating minimal node_modules with only @sentry/profiling-node..."
+cd "$TEST_DIR"
+
+# Create minimal package.json with only @sentry/profiling-node
+cat > package.json << 'EOF'
+{
+  "name": "astro-deployment",
+  "type": "module",
+  "dependencies": {
+    "@sentry/profiling-node": "^10.11.0"
+  }
+}
+EOF
+
+# Install only @sentry/profiling-node and its dependencies
+npm install --production --no-optional
 
 # Start server in background
 echo "🚀 Starting standalone server..."
@@ -73,8 +90,9 @@ echo "📊 Deployment size: $DEPLOYMENT_SIZE"
 rm -rf "$TEST_DIR"
 
 echo ""
-echo "🎉 All tests passed! Deployment works with node_modules for @sentry/profiling-node."
+echo "🎉 All tests passed! Optimized deployment works with minimal @sentry/profiling-node dependencies."
 echo "   ✅ Prerendered pages work"
 echo "   ✅ Server-rendered pages work"  
 echo "   ✅ @sentry/astro is bundled and functional"
 echo "   ✅ @sentry/profiling-node integration works"
+echo "   📦 Deployment size optimized (only essential @sentry/profiling-node dependencies included)"
